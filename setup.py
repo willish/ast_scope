@@ -23,6 +23,6 @@ setuptools.setup(
     ],
     python_requires='>=3.5',
     install_requires=[
-        'attrs==19.3.0'
+        'attrs'
     ]
 )
