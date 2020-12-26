@@ -142,6 +142,9 @@ class ProcessArguments(ast.NodeVisitor):
     def generic_visit(self, node):
         self.expr_scope.visit(node)
 
+
+
+
 class AnnotateScope(GroupSimilarConstructsVisitor):
     def __init__(self, scope, annotation_dict, class_binds_near):
         self.scope = scope
@@ -180,6 +183,11 @@ class AnnotateScope(GroupSimilarConstructsVisitor):
         subscope = self.create_subannotator(IntermediateFunctionScope(func_node, self.scope))
         ProcessArguments(self, subscope).visit(func_node.args)
         visit_all(subscope, func_node.body)
+
+    def visit_ExceptHandler(self, except_handler_node):
+        self.annotate_intermediate_scope(except_handler_node, except_handler_node.name, True)
+        self.scope.modify(except_handler_node.name)
+        visit_all(self, except_handler_node.type, except_handler_node.body)
 
     def visit_comprehension_generic(self, targets, comprehensions, typ):
         del typ
