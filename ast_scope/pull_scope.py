@@ -43,8 +43,9 @@ class PullScopes(GroupSimilarConstructsVisitor):
         super().generic_visit(node)
 
     def visit_ExceptHandler(self, node):
-        scope = self.pull_scope(node)
-        scope.add_variable(node)
+        if node.name is not None:
+            scope = self.pull_scope(node)
+            scope.add_variable(node)
         super().generic_visit(node)
 
     def visit_function_def(self, node, is_async):

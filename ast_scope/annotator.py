@@ -185,8 +185,9 @@ class AnnotateScope(GroupSimilarConstructsVisitor):
         visit_all(subscope, func_node.body)
 
     def visit_ExceptHandler(self, except_handler_node):
-        self.annotate_intermediate_scope(except_handler_node, except_handler_node.name, True)
-        self.scope.modify(except_handler_node.name)
+        if except_handler_node.name is not None:
+            self.annotate_intermediate_scope(except_handler_node, except_handler_node.name, True)
+            self.scope.modify(except_handler_node.name)
         visit_all(self, except_handler_node.type, except_handler_node.body)
 
     def visit_comprehension_generic(self, targets, comprehensions, typ):
